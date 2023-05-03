@@ -5,8 +5,8 @@ import (
 
 	helloworld "github.com/daveadams/vault-plugin-secrets-helloworld/plugin"
 	hclog "github.com/hashicorp/go-hclog"
-	"github.com/hashicorp/vault/helper/pluginutil"
-	"github.com/hashicorp/vault/logical/plugin"
+	"github.com/hashicorp/vault/api"
+        "github.com/hashicorp/vault/sdk/plugin"
 )
 
 func main() {
@@ -19,13 +19,13 @@ func main() {
 		}
 	}()
 
-	meta := &pluginutil.APIClientMeta{}
+	meta := &api.PluginAPIClientMeta{}
 
 	flags := meta.FlagSet()
 	flags.Parse(os.Args[1:])
 
 	tlsConfig := meta.GetTLSConfig()
-	tlsProviderFunc := pluginutil.VaultPluginTLSProvider(tlsConfig)
+	tlsProviderFunc := api.VaultPluginTLSProvider(tlsConfig)
 
 	if err := plugin.Serve(&plugin.ServeOpts{
 		BackendFactoryFunc: helloworld.Factory,
